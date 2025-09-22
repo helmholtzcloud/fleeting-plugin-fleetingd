@@ -1,0 +1,8 @@
+.vscode
+.DS_Store
+
+main
+dist
+/fleeting-plugin-fleetingd
+/cmd/fleeting-plugin-fleetingd/LICENSE
+/cmd/fleeting-plugin-fleetingd/NOTICE

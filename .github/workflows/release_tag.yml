@@ -1,0 +1,61 @@
+name: Release Tag
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version: '1.25'
+          check-latest: true
+
+      - name: Get Go Dependencies
+        run: |
+          # Install dependencies
+          go get .
+
+      - name: Update Version Info
+        run: |
+          export REPLACED_REF=$(echo $GITHUB_REF | sed -r 's/\//\\\//g')
+          export NONPREFIXED_VERSION="${GITHUB_REF_NAME:1}"
+
+          # Update embedded build info
+          sed -rie "s/^\s+Version:(.*)$/\tVersion: \"$NONPREFIXED_VERSION\",/m" version.go
+          sed -rie "s/^\s+Revision:(.*)$/\\tRevision: \"$GITHUB_SHA\",/m" version.go
+          sed -rie "s/^\s+Reference:(.*)$/\\tReference: \"$REPLACED_REF\",/m" version.go
+          sed -rie "s/^\s+BuiltAt:(.*)$/\\tBuiltAt: \"$(date --iso-8601=seconds)\",/m" version.go
+          gofmt -w version.go
+          cat version.go
+
+      - name: Check and Bundle Licenses
+        run: |
+          # Bundle licenses
+          curl -L -o "/usr/local/bin/go-licence-detector" $(curl -L https://api.github.com/repos/elastic/go-licence-detector/releases/latest | jq -r '.assets.[] | select ( .name == "go-licence-detector" ) | .browser_download_url')
+          chmod +x /usr/local/bin/go-licence-detector
+          go list -m -json all | go-licence-detector -includeIndirect -rules=./checker-rules.json -noticeTemplate=NOTICE.tpl -noticeOut=./cmd/fleeting-plugin-fleetingd/NOTICE
+          cp LICENSE ./cmd/fleeting-plugin-fleetingd
+
+      - name: Perform Cross-Platform Binary Build
+        run: |
+          # Cross-platform build
+          mkdir -p ./dist/artifacts
+
+          for architecture in amd64 arm64 riscv64
+          do
+            CGO_ENABLED=0 GOOS=linux GOARCH=$architecture go build -o ./dist/fleeting-plugin-fleetingd ./cmd/fleeting-plugin-fleetingd/
+            tar czf ./dist/artifacts/fleeting-plugin-fleetingd_linux_$architecture.tar.gz -C ./dist fleeting-plugin-fleetingd
+          done
+
+      - name: Upload Artifact Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: fleeting-plugin-fleetingd-artifacts
+          if-no-files-found: error
+          path: dist/artifacts/*.tar.gz
