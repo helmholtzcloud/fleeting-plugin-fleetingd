@@ -22,6 +22,7 @@ Example testing setup on Ubuntu 22.04 LTS: this modifies the network config such
 - [Add Cloud Hypervisor apt source](https://github.com/cloud-hypervisor/obs-packaging)
 - `sudo apt install cloud-hypervisor qemu-utils`
 - [Install gitlab runner](https://docs.gitlab.com/runner/install/linux-repository/)
+- Download the latest plugin binary from this repo's releases and place it in `/usr/local/bin`
 - Edit runner config at `/etc/gitlab-runner/config.toml` (see [Configuration Reference](#configuration-reference) below)
 - Enable nftables service and start it
   - Configure nftables to your liking (e.g. basic firewall setup, just pay attention to not fiddle with forwarding too much or lock yourself out by blocking SSH)
@@ -90,6 +91,7 @@ You can temporarily set `vm_enable_virtio_console` to `true`, restart the runner
 Check `nft list ruleset`. You should see counters above `0` in the `dropnottap` chain's `accept` rules of `fleetingd0` (the prebuild machine). Maybe you misspelled the egress interface name in the config.
 
 ### Limitations
+- At this time there is no OCI release distribution. For now, you'll have to download the binaries from the latest release. While OCI distribution is worked on you may subscribe to the [release feed](https://github.com/helmholtzcloud/fleeting-plugin-fleetingd/releases.atom) in the meantime.
 - As-is this relies on a bunch of rootful commands (e.g. modifying nftables). In the future this functionality could be better spearated.
 - Currently only Ubuntu Cloud LTS is supported. Support could also be expanded to other `user-data`-provisionable distributions.
 - The `nftables` SNAT mechanism is a bit barebones to say the least, also the use of `/30`s for allocating VM IPs could be more elegant e.g. by utilizing a OVN-backed approach.
@@ -122,7 +124,8 @@ You can run `fleeting-plugin-fleetingd licenses` to view the software's and depe
   shell = "bash"
 
   # Select the correct plugin
-  plugin = "ghcr.io/helmholtzcloud/fleeting-plugin-fleetingd:latest"
+  # Download the latest release binary and place it in /usr/local/bin
+  plugin = "fleeting-plugin-fleetingd"
 
   # Machines are initialized with cloud-init, wait for it to finish
   instance_ready_command = "cloud-init status --wait"
