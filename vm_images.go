@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"text/template"
 	"time"
@@ -25,13 +26,13 @@ import (
 )
 
 const kernelSHA256SumsURL = "https://cloud-images.ubuntu.com/daily/server/noble/current/unpacked/SHA256SUMS"
-const kernelURL = "https://cloud-images.ubuntu.com/daily/server/noble/current/unpacked/noble-server-cloudimg-amd64-vmlinuz-generic"
-
 const diskImageSHA256SumsURL = "https://cloud-images.ubuntu.com/daily/server/noble/current/SHA256SUMS"
-const diskImageURL = "https://cloud-images.ubuntu.com/daily/server/noble/current/noble-server-cloudimg-amd64.img"
 
 const vmWorkdir = ".instance_data"
 const decompressedSuffix = "_decompressed"
+
+var diskImageURL = fmt.Sprintf("https://cloud-images.ubuntu.com/daily/server/noble/current/noble-server-cloudimg-%s.img", runtime.GOARCH)
+var kernelURL = fmt.Sprintf("https://cloud-images.ubuntu.com/daily/server/noble/current/unpacked/noble-server-cloudimg-%s-vmlinuz-generic", runtime.GOARCH)
 
 //go:embed templates/*.tpl
 var userDataTemplates embed.FS

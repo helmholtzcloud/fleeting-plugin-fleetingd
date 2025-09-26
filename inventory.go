@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"sync"
 	"text/template"
@@ -591,7 +592,7 @@ func (i *Inventory) GetConnectInfo(name string) (*provider.ConnectInfo, error) {
 		ConnectorConfig: provider.ConnectorConfig{
 			Username: "ubuntu",
 			OS:       "linux",
-			Arch:     "amd64",
+			Arch:     runtime.GOARCH,
 
 			Protocol:     provider.ProtocolSSH,
 			ProtocolPort: 22,
