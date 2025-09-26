@@ -15,3 +15,5 @@ updates:
     schedule:
       interval: cron
       cronjob: 0 7 * * 1-5
+    allow:
+      - dependency-type: "all"
