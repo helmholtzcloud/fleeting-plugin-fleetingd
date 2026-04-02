@@ -192,8 +192,8 @@ func (i *InstanceGroup) ensureImages() error {
 	return nil
 }
 
-func (i *InstanceGroup) createOverlay(instanceName string) (string, error) {
-	// Create / overwrite a new copy on write overlay
+func (i *InstanceGroup) copyImage(instanceName string) (string, error) {
+	// Create a new copy of the base image
 
 	diskImageFileName, err := getFilenameFromURL(diskImageURL)
 	if err != nil {
@@ -202,15 +202,15 @@ func (i *InstanceGroup) createOverlay(instanceName string) (string, error) {
 	diskImageFilePath := filepath.Join(i.VMDiskDir, diskImageFileName)
 	decompressedPath := addSuffixToFilepath(diskImageFilePath, decompressedSuffix)
 
-	overlayPath := filepath.Join(i.VMDiskDir, vmWorkdir, instanceName+".img")
+	copyPath := filepath.Join(i.VMDiskDir, vmWorkdir, instanceName+".img")
 
-	imageDecompressionCommand := exec.Command("qemu-img", "create", "-b", decompressedPath, "-f", "qcow2", "-F", "qcow2", overlayPath)
-	err = imageDecompressionCommand.Run()
+	imageCopyCommand := exec.Command("cp", "-f", decompressedPath, copyPath)
+	err = imageCopyCommand.Run()
 	if err != nil {
 		return "", err
 	}
 
-	return overlayPath, nil
+	return copyPath, nil
 }
 
 func (i *InstanceGroup) getKernelFilePath() (string, error) {

@@ -176,8 +176,8 @@ func (i *Inventory) BootInstance(instanceGroup *InstanceGroup) error {
 		return err
 	}
 
-	// Create copy on write qcow image
-	overlayPath, err := instanceGroup.createOverlay(instanceName)
+	// Create copy of qcow image
+	overlayPath, err := instanceGroup.copyImage(instanceName)
 	if err != nil {
 		i.lock.Unlock()
 		return err
@@ -208,6 +208,7 @@ func (i *Inventory) BootInstance(instanceGroup *InstanceGroup) error {
 		"size=0,free_page_reporting=on",
 		"--cmdline",
 		"console=hvc0 root=/dev/vda1 rw",
+		"--landlock",
 	)
 
 	if instanceGroup.VMEnableVirtioConsole {
@@ -402,7 +403,8 @@ func (i *Inventory) PrebuildInstance(instanceGroup *InstanceGroup) error {
 		"--balloon",
 		"size=0,free_page_reporting=on",
 		"--cmdline",
-		"console=hvc0 root=/dev/vda1 rw")
+		"console=hvc0 root=/dev/vda1 rw",
+		"--landlock")
 
 	if instanceGroup.VMEnableVirtioConsole {
 		// Enable console
