@@ -5,7 +5,7 @@ go 1.26.0
 require (
 	github.com/hashicorp/go-hclog v1.6.3
 	gitlab.com/gitlab-org/fleeting/fleeting v0.0.0-20260321091649-b5bd86a11597
-	golang.org/x/crypto v0.49.0
+	golang.org/x/crypto v0.50.0
 )
 
 require (
