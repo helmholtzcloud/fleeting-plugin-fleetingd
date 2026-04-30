@@ -25,14 +25,14 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
-const kernelSHA256SumsURL = "https://cloud-images.ubuntu.com/daily/server/noble/current/unpacked/SHA256SUMS"
-const diskImageSHA256SumsURL = "https://cloud-images.ubuntu.com/daily/server/noble/current/SHA256SUMS"
+const kernelSHA256SumsURL = "https://cloud-images.ubuntu.com/daily/server/resolute/current/unpacked/SHA256SUMS"
+const diskImageSHA256SumsURL = "https://cloud-images.ubuntu.com/daily/server/resolute/current/SHA256SUMS"
 
 const vmWorkdir = ".instance_data"
 const decompressedSuffix = "_decompressed"
 
-var diskImageURL = fmt.Sprintf("https://cloud-images.ubuntu.com/daily/server/noble/current/noble-server-cloudimg-%s.img", runtime.GOARCH)
-var kernelURL = fmt.Sprintf("https://cloud-images.ubuntu.com/daily/server/noble/current/unpacked/noble-server-cloudimg-%s-vmlinuz-generic", runtime.GOARCH)
+var diskImageURL = fmt.Sprintf("https://cloud-images.ubuntu.com/daily/server/resolute/current/resolute-server-cloudimg-%s.img", runtime.GOARCH)
+var kernelURL = fmt.Sprintf("https://cloud-images.ubuntu.com/daily/server/resolute/current/unpacked/resolute-server-cloudimg-%s-vmlinuz-generic", runtime.GOARCH)
 
 //go:embed templates/*.tpl
 var userDataTemplates embed.FS

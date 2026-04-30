@@ -17,7 +17,7 @@ runcmd:
   - systemctl enable fail2ban
 
   # Install latest GitLab runner so artifacts can be pulled
-  - curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | sudo bash
+  - curl -L "https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh" | os=ubuntu dist=noble bash
   - apt install -y gitlab-runner
 
   # CUSTOM COMMANDS START
