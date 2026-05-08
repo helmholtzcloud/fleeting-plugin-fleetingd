@@ -9,6 +9,15 @@ packages:
   - ca-certificates
   - curl
 runcmd:
+  # Mitigate Dirty Frag
+  - echo "blacklist esp4" > /etc/modprobe.d/df-mitigation.conf
+  - echo "blacklist esp6" >> /etc/modprobe.d/df-mitigation.conf
+  - echo "blacklist rxrpc" >> /etc/modprobe.d/df-mitigation.conf
+  - echo "install esp4 /bin/false" >> /etc/modprobe.d/df-mitigation.conf
+  - echo "install esp6 /bin/false" >> /etc/modprobe.d/df-mitigation.conf
+  - echo "install rxrpc /bin/false" >> /etc/modprobe.d/df-mitigation.conf
+  - rmmod esp4 esp6 rxrpc 2>/dev/null
+
   # Firewall
   - ufw default deny incoming
   - ufw enable
