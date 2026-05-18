@@ -9,6 +9,10 @@ packages:
   - ca-certificates
   - curl
 runcmd:
+  # Mitigate CVE-2026-46333
+  - sysctl -w kernel.yama.ptrace_scope=3
+  - echo "kernel.yama.ptrace_scope = 3" > /etc/sysctl.d/cve202646333.conf
+
   # Mitigate Dirty Frag
   - echo "blacklist esp4" > /etc/modprobe.d/df-mitigation.conf
   - echo "blacklist esp6" >> /etc/modprobe.d/df-mitigation.conf
