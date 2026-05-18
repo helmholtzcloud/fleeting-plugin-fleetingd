@@ -472,7 +472,8 @@ func downloadFile(url string, targetPath string) error {
 	defer file.Close()
 
 	client := http.Client{
-		Timeout: time.Second * 5,
+		// A long timeout is better than no timeout
+		Timeout: time.Hour,
 	}
 
 	response, err := client.Get(url)
