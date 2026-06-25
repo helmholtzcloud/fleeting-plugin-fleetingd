@@ -9,7 +9,7 @@ require (
 )
 
 require (
-	github.com/anchore/go-lzo v0.1.0 // indirect
+	github.com/anchore/go-lzo v0.1.1 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/elliotwutingfeng/asciiset v0.0.0-20260129054604-cfde2086bc57 // indirect
 	github.com/google/uuid v1.6.0 // indirect
