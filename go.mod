@@ -17,7 +17,7 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.27 // indirect
 	github.com/pkg/xattr v0.4.12 // indirect
 	github.com/sirupsen/logrus v1.9.4 // indirect
-	github.com/ulikunitz/xz v0.5.15 // indirect
+	github.com/ulikunitz/xz v0.5.16 // indirect
 )
 
 require (
