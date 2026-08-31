@@ -29,11 +29,12 @@ Example testing setup on Ubuntu 22.04 LTS: this modifies the network config such
   - `sudo systemctl enable nftables`
   - `sudo systemctl start nftables`
 - Modify the runner systemd service:
-    - `sudo nano /etc/systemd/system/gitlab-runner.service`
+    - `sudo systemctl edit gitlab-runner.service`
+      - Your default editor will open with instructions to set-up a permanent override. Keep in mind that you need to copy the parts you want to change, instead of changing them in the source. If in doubt, see documentation for `systemctl edit`.
       - Network must be online so that images can be downloaded properly
-          - In `[Unit]` set `After=network-online.target`
+          - Add a `[Unit]` section to your override and set `After=network-online.target`
       - Auto-restart every 24h to rebuild/fetch base image
-          - In `[Service]` set `RuntimeMaxSec=24h`
+          - Add a `[Service]` section to your override and set `RuntimeMaxSec=24h`
     - `sudo systemctl daemon-reload`
     - `sudo systemctl restart gitlab-runner`
 - Reboot the host
