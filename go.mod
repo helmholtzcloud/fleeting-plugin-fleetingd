@@ -16,7 +16,7 @@ require (
 	github.com/klauspost/compress v1.19.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.28 // indirect
 	github.com/pkg/xattr v0.4.12 // indirect
-	github.com/sirupsen/logrus v1.10.0 // indirect
+	github.com/sirupsen/logrus v1.10.2 // indirect
 	github.com/ulikunitz/xz v0.5.16 // indirect
 )
 
