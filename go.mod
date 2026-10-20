@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/hashicorp/go-hclog v1.6.3
-	gitlab.com/gitlab-org/fleeting/fleeting v0.0.0-20260321091649-b5bd86a11597
+	gitlab.com/gitlab-org/fleeting/fleeting v0.0.0-20261019212224-eecdbf731b72
 	golang.org/x/crypto v0.58.0
 )
 
@@ -33,7 +33,7 @@ require (
 	golang.org/x/net v0.61.0 // indirect
 	golang.org/x/sys v0.49.0
 	golang.org/x/text v0.43.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260706201446-f0a921348800 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b // indirect
 	google.golang.org/grpc v1.84.0 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 )

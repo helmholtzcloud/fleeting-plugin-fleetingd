@@ -145,9 +145,26 @@ func (i *InstanceGroup) Heartbeat(ctx context.Context, instance string) error {
 	if err != nil {
 		return err
 	}
-	connection.Close()
+	err = connection.Close()
+	if err != nil {
+		return err
+	}
 
 	return nil
+}
+
+func (i *InstanceGroup) Suspend(ctx context.Context, instances []string) (succeeded []string, err error) {
+	// This is a no-op as we do not support suspend/resume
+	i.logger.Warn("Runner attempted to suspend an instance. This is not supported on this plugin.")
+
+	return []string{}, nil
+}
+
+func (i *InstanceGroup) Resume(ctx context.Context, instances []string) (succeeded []string, err error) {
+	// This is a no-op as we do not support suspend/resume
+	i.logger.Warn("Runner attempted to resume an instance. This is not supported on this plugin.")
+
+	return []string{}, nil
 }
 
 func (i *InstanceGroup) Shutdown(ctx context.Context) error {

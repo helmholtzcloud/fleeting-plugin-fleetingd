@@ -7,7 +7,7 @@ Note that there are [rootless alternatives](https://docs.gitlab.com/ci/docker/us
 
 ## Is it good?
 
-While the basic use case works and has been tested in multiple projects, this software should be considered early-stage. There are some areas to rework (looking at you nftables SNAT). In addition, more data on container image build performance is needed to determine whether it is viable to continue the project.
+While the basic use case works and has been tested in multiple projects, this software should be considered early-stage. There are some areas to rework (looking at you nftables SNAT). In addition, more data on container image build performance is needed to determine whether it is viable to continue the project. It has been run successfully on Ubuntu 26.04 LTS and AlmaLinux 10.
 
 ## Implementation Overview
 
@@ -15,7 +15,7 @@ Quick implementation rundown: this runner works by downloading the latest Ubuntu
 
 ## Example Setup on Ubuntu
 
-Example testing setup on Ubuntu 22.04 LTS: this modifies the network config such as IPv4 forwarding and enabling nftables to get SNAT network access for the VMs. Check whether this is compatible with your firewall/network setup!
+Example testing setup on Ubuntu 26.04 LTS: this modifies the network config such as IPv4 forwarding and enabling nftables to get SNAT network access for the VMs. Check whether this is compatible with your firewall/network setup!
 
 - Do the e.g. user / security / unattended-upgrades configuration for a regular Ubuntu Server host, including e.g. using nftables for your firewall and adding a basic ruleset blocking incoming connections
 - Enable IP forwarding in `/etc/sysctl.conf` (`net.ipv4.ip_forward=1`)

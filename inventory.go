@@ -196,8 +196,8 @@ func (i *Inventory) BootInstance(instanceGroup *InstanceGroup) error {
 		"--kernel",
 		kernelFilePath,
 		"--disk",
-		fmt.Sprintf("path=%s", overlayPath),
-		fmt.Sprintf("path=%s,readonly=on", userdataPath),
+		fmt.Sprintf("path=%s,image_type=qcow2", overlayPath),
+		fmt.Sprintf("path=%s,readonly=on,image_type=raw", userdataPath),
 		"--cpus",
 		fmt.Sprintf("boot=%d", instanceGroup.VMNumCPUCores),
 		"--memory",
@@ -220,7 +220,10 @@ func (i *Inventory) BootInstance(instanceGroup *InstanceGroup) error {
 	}
 
 	instanceGroup.logger.Info("starting instance VM", "instance", instanceName)
-	hypervisorCommand.Start()
+	err = hypervisorCommand.Start()
+	if err != nil {
+		return err
+	}
 
 	go func() {
 		//
@@ -235,12 +238,12 @@ func (i *Inventory) BootInstance(instanceGroup *InstanceGroup) error {
 		// Delete overlay and cloudinit data
 		err = os.Remove(overlayPath)
 		if err != nil {
-			instanceGroup.logger.Error("error deleting overlay after instance has been stopped: %w", err)
+			instanceGroup.logger.Error("error deleting overlay after instance has been stopped", err)
 		}
 
 		err = os.Remove(userdataPath)
 		if err != nil {
-			instanceGroup.logger.Error("error deleting userdata after instance has been stopped: %w", err)
+			instanceGroup.logger.Error("error deleting userdata after instance has been stopped", err)
 		}
 
 		i.lock.Lock()
@@ -253,7 +256,10 @@ func (i *Inventory) BootInstance(instanceGroup *InstanceGroup) error {
 
 		i.lock.Unlock()
 
-		i.ApplyNftables(instanceGroup)
+		err = i.ApplyNftables(instanceGroup)
+		if err != nil {
+			instanceGroup.logger.Error("error applying nftables rules", err)
+		}
 	}()
 
 	// Update inventory
@@ -392,8 +398,8 @@ func (i *Inventory) PrebuildInstance(instanceGroup *InstanceGroup) error {
 		"--kernel",
 		kernelFilePath,
 		"--disk",
-		fmt.Sprintf("path=%s", decompressedPath),
-		fmt.Sprintf("path=%s,readonly=on", userdataPath),
+		fmt.Sprintf("path=%s,image_type=qcow2", decompressedPath),
+		fmt.Sprintf("path=%s,readonly=on,image_type=raw", userdataPath),
 		"--cpus",
 		fmt.Sprintf("boot=%d", instanceGroup.VMNumCPUCores),
 		"--memory",
@@ -415,7 +421,11 @@ func (i *Inventory) PrebuildInstance(instanceGroup *InstanceGroup) error {
 	}
 
 	instanceGroup.logger.Info("starting instance VM", "instance", instanceName)
-	hypervisorCommand.Start()
+	err = hypervisorCommand.Start()
+	if err != nil {
+		return err
+	}
+
 	prebuildDone := make(chan struct{})
 
 	go func() {
@@ -424,7 +434,10 @@ func (i *Inventory) PrebuildInstance(instanceGroup *InstanceGroup) error {
 		//
 
 		// Wait for VM to terminate (when context gets cancelled)
-		hypervisorCommand.Wait()
+		err := hypervisorCommand.Wait()
+		if err != nil {
+			instanceGroup.logger.Error("error running instace: %w", err)
+		}
 
 		instanceGroup.logger.Info("instance process finished. cleaning up.", "instance", instanceName)
 
@@ -444,8 +457,10 @@ func (i *Inventory) PrebuildInstance(instanceGroup *InstanceGroup) error {
 
 		i.lock.Unlock()
 
-		i.ApplyNftables(instanceGroup)
-
+		err = i.ApplyNftables(instanceGroup)
+		if err != nil {
+			instanceGroup.logger.Error("error applying nftables rules: %w", err)
+		}
 		prebuildDone <- struct{}{}
 	}()
 
@@ -540,7 +555,7 @@ func (i *Inventory) DestroyAllInstances() error {
 	i.shuttingDown = true
 
 	// Collect instance names to destroy
-	for name, _ := range i.instances {
+	for name := range i.instances {
 		instanceNames = append(instanceNames, name)
 	}
 
@@ -563,7 +578,7 @@ func (i *Inventory) GetAllInstances() []string {
 
 	i.lock.RLock()
 
-	for name, _ := range i.instances {
+	for name := range i.instances {
 		instanceNames = append(instanceNames, name)
 	}
 
@@ -658,7 +673,10 @@ func (i *Inventory) ApplyNftables(instanceGroup *InstanceGroup) error {
 		return err
 	}
 
-	rulesetFile.Close()
+	err = rulesetFile.Close()
+	if err != nil {
+		return err
+	}
 
 	err = exec.Command("nft", "-f", rulesetPath).Run()
 	if err != nil {
