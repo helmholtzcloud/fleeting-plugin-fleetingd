@@ -1,37 +1,34 @@
 module github.com/helmholtzcloud/fleeting-plugin-fleetingd
 
-go 1.26.0
+go 1.27
 
 require (
+	github.com/diskfs/go-diskfs v1.9.4
 	github.com/hashicorp/go-hclog v1.6.3
-	gitlab.com/gitlab-org/fleeting/fleeting v0.0.0-20261019212224-eecdbf731b72
+	gitlab.com/gitlab-org/fleeting/fleeting v0.0.0-20261020080233-69c97f7b8a09
 	golang.org/x/crypto v0.58.0
+	golang.org/x/sys v0.49.0
 )
 
 require (
 	github.com/anchore/go-lzo v0.1.1 // indirect
 	github.com/djherbis/times v1.6.0 // indirect
 	github.com/elliotwutingfeng/asciiset v1.0.0 // indirect
+	github.com/fatih/color v1.19.0 // indirect
+	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/uuid v1.6.0 // indirect
+	github.com/hashicorp/go-plugin v1.8.0 // indirect
+	github.com/hashicorp/yamux v0.1.2 // indirect
 	github.com/klauspost/compress v1.20.3 // indirect
+	github.com/mattn/go-colorable v0.1.16 // indirect
+	github.com/mattn/go-isatty v0.0.24 // indirect
+	github.com/oklog/run v1.2.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.33 // indirect
 	github.com/pkg/xattr v0.4.12 // indirect
 	github.com/sirupsen/logrus v1.10.2 // indirect
 	github.com/ulikunitz/xz v0.5.17 // indirect
-)
-
-require (
-	github.com/diskfs/go-diskfs v1.9.4
-	github.com/fatih/color v1.19.0 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/hashicorp/go-plugin v1.8.0 // indirect
-	github.com/hashicorp/yamux v0.1.2 // indirect
-	github.com/mattn/go-colorable v0.1.16 // indirect
-	github.com/mattn/go-isatty v0.0.24 // indirect
-	github.com/oklog/run v1.2.0 // indirect
 	golang.org/x/mod v0.42.0 // indirect
 	golang.org/x/net v0.61.0 // indirect
-	golang.org/x/sys v0.49.0
 	golang.org/x/text v0.43.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20261019180522-ce908d29299b // indirect
 	google.golang.org/grpc v1.84.0 // indirect
