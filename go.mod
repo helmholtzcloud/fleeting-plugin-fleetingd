@@ -6,7 +6,7 @@ require (
 	github.com/diskfs/go-diskfs v1.9.4
 	github.com/hashicorp/go-hclog v1.6.3
 	gitlab.com/gitlab-org/fleeting/fleeting v0.0.0-20261020080233-69c97f7b8a09
-	golang.org/x/crypto v0.58.0
+	golang.org/x/crypto v0.59.0
 	golang.org/x/sys v0.50.0
 )
 
