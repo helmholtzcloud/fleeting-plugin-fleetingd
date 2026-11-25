@@ -23,7 +23,7 @@ require (
 	github.com/mattn/go-colorable v0.1.16 // indirect
 	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/oklog/run v1.2.0 // indirect
-	github.com/pierrec/lz4/v4 v4.1.33 // indirect
+	github.com/pierrec/lz4/v4 v4.1.34 // indirect
 	github.com/pkg/xattr v0.4.12 // indirect
 	github.com/sirupsen/logrus v1.10.2 // indirect
 	github.com/ulikunitz/xz v0.5.17 // indirect
